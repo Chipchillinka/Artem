@@ -3,43 +3,69 @@ package com.company;
 import java.util.Scanner;
 
 public class Main {
+    static Parabola p1, p2;
+    static Circle c1, c2;
+
     static Scanner in;
-    static double r1, r2, r3, s;
-    static int a, b,c,d;
+
+    public static void printColor(double x, double y){
+        Color col = getColor(x,y);
+        System.out.printf("( %.3f ; %.3f ) -> %s\n",x,y,col);
+    }
+
 
     public static void main(String[] args) {
+        p1= new Parabola(0.5, 3, 1.5);
+        p2 = new Parabola(-0.25, -3, -5);
+        c1 = new Circle(1,-3,3);
+        c2 = new Circle(0,-3,5);
         in = new Scanner(System.in);
-        System.out.print("Введите r1, r2, r3 \n");
-        System.out.print("r1 = ");
-        r1 = in.nextDouble();
-        System.out.print("r2 = ");
-        r2 = in.nextDouble();
-        System.out.print("r3 = ");
-        r3 = in.nextDouble();
-        System.out.print("Колличество частей 1 типа - ");
-        a = in.nextInt();
-        System.out.print("Колличество частей 2 типа - ");
-        b = in.nextInt();
-        System.out.print("Колличество частей 3 типа - ");
-        c = in.nextInt();
-        System.out.print("Колличество частей 4 типа - ");
-        d = in.nextInt();
-        s = a*Area1(r1)+b*Area2(r1,r2)+c*Area3(r3,r2)+d*Area4(r3);
+
+        printColor(0,0);
+        printColor(-4,1);
+        printColor(1,-1);
+        printColor(-11,0);
+        printColor(1,-4);
+        printColor(-1.5,-1.5);
+        printColor(-1.5,-3);
+
+        System.out.print("Введите x, y \nx = ");
+        double x = in.nextDouble();
+        System.out.print("y = ");
+        double y = in.nextDouble();
         System.out.println();
-        System.out.printf("Площадь заштрихованной части фигуры = %.3f",s);
+        printColor(x,y);
 
 
     }
-    public static double Area1(double r1){
-        return  Math.PI*r1*r1/8;
-    }
-    public static double Area2(double r1, double r2){
-        return (Math.PI*r2*r2-Math.PI*r1*r1)/8;
-    }
-    public static double Area3(double r3,double r2){
-        return  (Math.PI*r3*r3-Math.PI*r2*r2)/8;
-    }
-    public static double Area4(double r3){
-        return  (4*r3*r3-Math.PI*r3*r3)/8;
+    public static Color getColor(double x, double y){
+        if (p1.isInnerPoint(x,y) && p2.isInnerPoint(x,y) && !c2.isInnerPoint(x,y)){
+            return Color.ORANGE;
+        }
+        if (!p2.isInnerPoint(x,y) && !p1.isInnerPoint(x,y) && !c2.isInnerPoint(x, y)){
+            return Color.ORANGE;
+        }
+        if (!p1.isInnerPoint(x,y) && !p2.isInnerPoint(x,y) && c1.isInnerPoint(x,y)){
+            return Color.ORANGE;
+        }
+        if (!p1.isInnerPoint(x,y) && p2.isInnerPoint(x,y) && !c2.isInnerPoint(x,y) && x>=0){
+            return Color.BLUE;
+        }
+        if (!p1.isInnerPoint(x,y) && p2.isInnerPoint(x,y) && !c1.isInnerPoint(x,y) && c2.isInnerPoint(x,y)){
+            return Color.BLUE;
+        }
+        if (p1.isInnerPoint(x,y) && !p2.isInnerPoint(x,y) && c1.isInnerPoint(x,y)){
+            return Color.BLUE;
+        }
+        if (!p1.isInnerPoint(x,y) && !p2.isInnerPoint(x,y) && c2.isInnerPoint(x,y) && !c1.isInnerPoint(x,y)){
+            return Color.GREEN;
+        }
+        if (!p1.isInnerPoint(x,y) && p2.isInnerPoint(x,y) && c1.isInnerPoint(x,y)){
+            return Color.GREEN;
+        }
+        if (p1.isInnerPoint(x,y) && p2.isInnerPoint(x,y) && c2.isInnerPoint(x,y) && !c1.isInnerPoint(x,y)){
+            return Color.GRAY;
+        }
+        return Color.WHITE;
     }
 }
